@@ -1,7 +1,7 @@
 {
   "name": "serc-cli",
   "preferGlobal": true,
-  "version": "1.3.7",
+  "version": "1.0.1",
   "description": "Command line interface for bootstrapping and managing serc dapps",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Qingfeng Shan <sqf1225@foxmail.com>",
   "license": "MIT",
   "dependencies": {
-    "serc-js": "*",
+    "serc-js": "https://github.com/WashiPlatform/serc-js.git",
     "async": "1.5.2",
     "bitcore-mnemonic": "1.0.1",
     "browserify-bignum": "1.3.0-2",

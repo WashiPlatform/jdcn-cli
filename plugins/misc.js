@@ -6,7 +6,7 @@ var blockHelper = require("../helpers/block.js");
 var cryptoLib = require("../lib/crypto.js");
 var dappHelper = require("../helpers/dapp.js");
 var Api = require('../helpers/api.js');
-var AschUtils = require('asch-js').utils;
+var SercUtils = require('serc-js').utils;
 
 var globalOptions;
 
@@ -159,8 +159,8 @@ function delegatestat() {
 						d.balance / 100000000,
 						b ? b.height : '',
 						b ? b.id : '',
-						AschUtils.format.fullTimestamp(b ? b.timestamp : ''),
-						AschUtils.format.timeAgo(b ? b.timestamp : ''));
+                    	SercUtils.format.fullTimestamp(b ? b.timestamp : ''),
+                    	SercUtils.format.timeAgo(b ? b.timestamp : ''));
 			}
 		});
 	});

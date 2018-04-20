@@ -1,6 +1,6 @@
 var fs = require('fs');
 var crypto = require('crypto');
-var aschJS = require('asch-js');
+var sercJS = require('serc-js');
 var Api = require('../helpers/api.js');
 var blockHelper = require('../helpers/block.js');
 var cryptoLib = require('../lib/crypto.js');
@@ -193,7 +193,7 @@ function sendMoney(options) {
   // getApi().put('/api/transactions/', params, function (err, result) {
   //   console.log(err || result);
   // });
-  var trs = aschJS.transaction.createTransaction(
+  var trs = sercJS.transaction.createTransaction(
     options.to,
     Number(options.amount),
     options.message,
@@ -206,7 +206,7 @@ function sendMoney(options) {
 }
 
 function sendAsset(options) {
-  var trs = aschJS.uia.createTransfer(
+  var trs = sercJS.uia.createTransfer(
     options.currency,
     options.amount,
     options.to,
@@ -228,7 +228,7 @@ function registerDelegate(options) {
   // getApi().put('/api/delegates/', params, function (err, result) {
   //   console.log(err || result);
   // });
-  var trs = aschJS.delegate.createDelegate(
+  var trs = sercJS.delegate.createDelegate(
     options.username,
     options.secret,
     options.secondSecret
@@ -242,7 +242,7 @@ function vote(secret, publicKeys, op, secondSecret) {
   var votes = publicKeys.split(',').map(function (el) {
     return op + el;
   });
-  var trs = aschJS.vote.createVote(
+  var trs = sercJS.vote.createVote(
     votes,
     secret,
     secondSecret
@@ -292,7 +292,7 @@ function downvote(options) {
 }
 
 function setSecondSecret(options) {
-  var trs = aschJS.signature.createSignature(options.secret, options.secondSecret);
+  var trs = sercJS.signature.createSignature(options.secret, options.secondSecret);
   getApi().broadcastTransaction(trs, function (err, result) {
     console.log(err || result.transactionId)
   });
@@ -304,21 +304,21 @@ function registerDapp(options) {
     return;
   }
   var dapp = JSON.parse(fs.readFileSync(options.metafile, 'utf8'));
-  var trs = aschJS.dapp.createDApp(dapp, options.secret, options.secondSecret);
+  var trs = sercJS.dapp.createDApp(dapp, options.secret, options.secondSecret);
   getApi().broadcastTransaction(trs, function (err, result) {
     console.log(err || result.transactionId)
   });
 }
 
 function deposit(options) {
-  var trs = aschJS.transfer.createInTransfer(options.dapp, options.currency, options.amount, options.secret, options.secondSecret)
+  var trs = sercJS.transfer.createInTransfer(options.dapp, options.currency, options.amount, options.secret, options.secondSecret)
   getApi().broadcastTransaction(trs, function (err, result) {
     console.log(err || result.transactionId)
   });
 }
 
 function dappTransaction(options) {
-  var trs = aschJS.dapp.createInnerTransaction({
+  var trs = sercJS.dapp.createInnerTransaction({
     fee: options.fee,
     type: Number(options.type),
     args: options.args
@@ -329,7 +329,7 @@ function dappTransaction(options) {
 }
 
 function lock(options) {
-  var trs = aschJS.transaction.createLock(options.height, options.secret, options.secondSecret)
+  var trs = sercJS.transaction.createLock(options.height, options.secret, options.secondSecret)
   getApi().broadcastTransaction(trs, function (err, result) {
     console.log(err || result.transactionId)
   });
@@ -354,7 +354,7 @@ function getTransactionBytes(options) {
     console.log('Invalid transaction format')
     return
   }
-  console.log(aschJS.crypto.getBytes(trs, true, true).toString('hex'))
+  console.log(sercJS.crypto.getBytes(trs, true, true).toString('hex'))
 }
 
 function getTransactionId(options) {
@@ -364,7 +364,7 @@ function getTransactionId(options) {
     console.log('Invalid transaction format')
     return
   }
-  console.log(aschJS.crypto.getId(trs))
+  console.log(sercJS.crypto.getId(trs))
 }
 
 function getBlockPayloadHash(options) {
@@ -376,7 +376,7 @@ function getBlockPayloadHash(options) {
   }
   var payloadHash = crypto.createHash('sha256');
   for (let i = 0; i < block.transactions.length; ++i) {
-    payloadHash.update(aschJS.crypto.getBytes(block.transactions[i]))
+    payloadHash.update(sercJS.crypto.getBytes(block.transactions[i]))
   }
   console.log(payloadHash.digest().toString('hex'))
 }
@@ -403,7 +403,7 @@ function getBlockId(options) {
 }
 
 function verifyBytes(options) {
-  console.log(aschJS.crypto.verifyBytes(options.bytes, options.signature, options.publicKey))
+  console.log(sercJS.crypto.verifyBytes(options.bytes, options.signature, options.publicKey))
 }
 
 module.exports = function(program) {
@@ -568,7 +568,7 @@ module.exports = function(program) {
   program
     .command("listdiffvotes")
     .description("list the votes each other")
-    .option("-u, --username <username>", "", process.env.ASCH_USER)
+    .option("-u, --username <username>", "", process.env.SERC_USER)
     .action(listdiffvotes);
 
   program
