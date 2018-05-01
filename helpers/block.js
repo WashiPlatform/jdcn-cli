@@ -19,18 +19,6 @@ function getBytes(block, skipSignature) {
     } else {
         bb.writeString('0')
     }
-    // liming 20170321 公链逻辑
-    // if (block.previousBlock) {
-    //    var pb = bignum(block.previousBlock).toBuffer({ size: '8' });
-    //
-    //    for (var i = 0; i < 8; i++) {
-    //        bb.writeByte(pb[i]);
-    //    }
-    // } else {
-    //    for (var i = 0; i < 8; i++) {
-    //        bb.writeByte(0);
-    //    }
-    // }
 
     bb.writeInt(block.numberOfTransactions);
     bb.writeLong(block.totalAmount);
